@@ -77,12 +77,12 @@ const db = getDatabase(app);
 const auth = getAuth(app);
 const dataRef = ref(db, "undangan");
 
-const OWNER = "emmachan00000@gmail.com";
+const OWNERS = ["piemanjordan4@gmail.com", "emmachan00000@gmail.com"];
 const FIELDS = ["nama1", "nama2", "isi", "tanggal", "alamat"];
 const $ = (id) => document.getElementById(id);
 let user = null;
 
-const isOwner = () => !!user && user.email === OWNER;
+const isOwner = () => !!user && OWNERS.includes(user.email);
 
 function lockForm() {
   const ok = isOwner();
@@ -90,8 +90,8 @@ function lockForm() {
   $("btnSave").hidden = !ok;
   let msg = "";
   if (location.protocol === "file:") msg = "Buka lewat alamat https (GitHub Pages) atau localhost. Login Google tidak jalan kalau file dibuka langsung.";
-  else if (!user) msg = "Mode lihat saja. Klik Masuk dengan Google memakai " + OWNER + " untuk mengedit.";
-  else if (!ok) msg = "Anda masuk sebagai " + user.email + ", bukan " + OWNER + ". Hanya bisa melihat. Klik Keluar lalu masuk dengan akun yang benar.";
+  else if (!user) msg = "Mode lihat saja. Klik Masuk dengan Google memakai " + OWNERS.join(" atau ") + " untuk mengedit.";
+  else if (!ok) msg = "Anda masuk sebagai " + user.email + ", bukan salah satu akun yang diizinkan (" + OWNERS.join(", ") + "). Hanya bisa melihat. Klik Keluar lalu masuk dengan akun yang benar.";
   else msg = "Masuk sebagai " + user.email + ". Silakan edit lalu klik Simpan.";
   $("note").textContent = msg;
 }
