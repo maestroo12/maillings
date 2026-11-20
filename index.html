@@ -43,6 +43,8 @@
     </div>
   </header>
 
+  <p id="note" class="preview"></p>
+
   <form id="form">
     <div class="row">
       <label>Nama pengantin 1 <input id="nama1" maxlength="60" required></label>
@@ -86,6 +88,12 @@ function lockForm() {
   const ok = isOwner();
   FIELDS.forEach((f) => ($(f).disabled = !ok));
   $("btnSave").hidden = !ok;
+  let msg = "";
+  if (location.protocol === "file:") msg = "Buka lewat alamat https (GitHub Pages) atau localhost. Login Google tidak jalan kalau file dibuka langsung.";
+  else if (!user) msg = "Mode lihat saja. Klik Masuk dengan Google memakai " + OWNER + " untuk mengedit.";
+  else if (!ok) msg = "Anda masuk sebagai " + user.email + ", bukan " + OWNER + ". Hanya bisa melihat. Klik Keluar lalu masuk dengan akun yang benar.";
+  else msg = "Masuk sebagai " + user.email + ". Silakan edit lalu klik Simpan.";
+  $("note").textContent = msg;
 }
 
 function preview() {
