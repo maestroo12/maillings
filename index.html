@@ -65,6 +65,8 @@
   /* undangan terpilih */
   .feat { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:22px; margin:10px 0 36px; }
   .feat .t { font-size:clamp(1.15rem, 3.6vw + .5rem, 1.6rem); font-weight:600; letter-spacing:-.01em; line-height:1.3; text-wrap:balance; }
+  .feat .t.stack { white-space:pre-line; text-align:center; }
+  .feat .t.stack + .d, .feat .t.stack ~ .a { text-align:center; }
   .feat .d { margin-top:6px; color:var(--text); font-size:.9rem; }
   .feat .a { margin-top:2px; color:var(--muted); font-size:.88rem; }
   #dIsi { margin-top:16px; padding-top:16px; border-top:1px solid var(--line); font-size:.92rem; line-height:1.7; white-space:pre-line; }
@@ -81,7 +83,7 @@
   li.item:last-child { border-bottom:0; }
   li.item:hover { background:var(--soft); }
   li.item.sel { background:var(--soft); box-shadow:inset 3px 0 0 var(--acc); }
-  .nm { font-weight:500; font-size:.9rem; line-height:1.35; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .nm { font-weight:500; font-size:.9rem; line-height:1.35; white-space:pre-line; display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden; }
   .tg, .al { font-size:.82rem; color:var(--muted); line-height:1.4; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
   .kb { border:0; background:none; width:36px; height:36px; border-radius:10px; font-size:1.15rem; line-height:1; color:var(--muted); }
   .kb:hover { background:var(--line); color:var(--text); }
@@ -132,7 +134,7 @@
     .lh { align-items:stretch; } .lh h2 { width:100%; } .tools { flex-basis:100%; justify-content:stretch; } .tools input { max-width:none; }
     li.item { grid-template-columns:minmax(0,1fr) 36px; gap:2px 8px; padding:12px 6px 12px 14px; }
     li.item .nm, li.item .tg, li.item .al { grid-column:1; }
-    li.item .nm { -webkit-line-clamp:3; }
+    li.item .nm { -webkit-line-clamp:5; }
     li.item .kb { grid-column:2; grid-row:1 / 4; align-self:center; }
     .hrs { grid-template-columns:repeat(6, minmax(0,1fr)); }
     .two { grid-template-columns:1fr; }
@@ -234,6 +236,8 @@ let user = null, data = {}, selId = null, menuId = null, editId = null, year = n
 
 const isOwner = () => !!user && OWNERS.includes(user.email);
 const title = (v) => (v.nama1 || "") + " & " + (v.nama2 || "");
+// nama panjang: "&" di tengah, di barisnya sendiri
+const stacked = (v, max) => title(v).length > max ? (v.nama1 || "") + "\n&\n" + (v.nama2 || "") : title(v);
 const pad = (n) => String(n).padStart(2, "0");
 function parseTgl(s) {
   const m = /(\d{1,2})\s+([a-zA-Z]+)\s+(\d{4})/.exec(s || "");
@@ -318,7 +322,9 @@ function renderTop() {
   const mk = (cls, txt) => { const e = document.createElement("div"); e.className = cls; e.textContent = txt; return e; };
   if (!hero) h.append(mk("t", "Belum ada data"));
   else {
-    h.append(mk("t", title(hero)));
+    const t = mk("t", stacked(hero, 24));
+    if (title(hero).length > 24) t.classList.add("stack");
+    h.append(t);
     if (hero.tanggal) h.append(mk("d", hero.tanggal));
     if (hero.alamat) h.append(mk("a", hero.alamat));
   }
@@ -339,7 +345,8 @@ function renderList() {
     li.className = "item" + (hero && v.id === hero.id ? " sel" : "");
     li.dataset.id = v.id; li.tabIndex = 0;
     const cell = (cls, txt) => { const d = document.createElement("div"); d.className = cls; d.textContent = txt; d.title = txt; return d; };
-    li.append(cell("nm", title(v)), cell("tg", v.tanggal || ""), cell("al", v.alamat || ""));
+    const nmEl = cell("nm", stacked(v, 30)); nmEl.title = title(v);
+    li.append(nmEl, cell("tg", v.tanggal || ""), cell("al", v.alamat || ""));
     const kb = document.createElement("button");
     kb.className = "kb"; kb.textContent = "⋮"; kb.setAttribute("aria-label", "Menu"); kb.hidden = !isOwner();
     kb.onclick = (e) => { e.stopPropagation(); showMenu(v.id, kb); };
