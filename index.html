@@ -6,230 +6,159 @@
 <title>Undangan</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root { --page:#e1e6ee; --frame:#f2f5fa; --panel:#fff; --soft:#f1f4f9; --text:#12161c; --muted:#8a93a0; --line:#e6e9ee;
-    --ink:#16191e; --ink-text:#fff; --acc:#16191e; --onacc:#fff; --danger:#d0493c; color-scheme:light; }
+  :root { --bg:#fafaf9; --panel:#fff; --soft:#f3f3f1; --text:#1c1c1b; --muted:#85857f; --line:#e7e7e3;
+    --acc:#1c1c1b; --onacc:#fff; --danger:#c8402f; color-scheme:light; }
   @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) { --page:#0d1015; --frame:#161b22; --panel:#1d232b; --soft:#252c36; --text:#eef1f5; --muted:#8f99a6;
-      --line:#2b333d; --ink:#0a0c10; --acc:#eef1f5; --onacc:#111; --danger:#ef7f73; color-scheme:dark; }
+    :root:not([data-theme="light"]) { --bg:#121212; --panel:#1a1a19; --soft:#242423; --text:#ecece8; --muted:#8e8e88;
+      --line:#2d2d2b; --acc:#ecece8; --onacc:#121212; --danger:#ef7f73; color-scheme:dark; }
   }
-  :root[data-theme="dark"] { --page:#0d1015; --frame:#161b22; --panel:#1d232b; --soft:#252c36; --text:#eef1f5; --muted:#8f99a6;
-    --line:#2b333d; --ink:#0a0c10; --acc:#eef1f5; --onacc:#111; --danger:#ef7f73; color-scheme:dark; }
+  :root[data-theme="dark"] { --bg:#121212; --panel:#1a1a19; --soft:#242423; --text:#ecece8; --muted:#8e8e88;
+    --line:#2d2d2b; --acc:#ecece8; --onacc:#121212; --danger:#ef7f73; color-scheme:dark; }
   * { box-sizing:border-box; }
-  body { margin:0; background:var(--page); color:var(--text); font:15px/1.5 "Poppins","Segoe UI",system-ui,sans-serif; min-height:100vh;
-    overflow-x:hidden; transition:background .5s,color .5s; }
-  body::before { content:""; position:fixed; inset:-30%; pointer-events:none;
-    background:radial-gradient(circle at 30% 30%,rgba(128,128,128,.22),transparent 40%),radial-gradient(circle at 75% 70%,rgba(128,128,128,.18),transparent 40%);
-    animation:drift 18s ease-in-out infinite alternate; }
-  @keyframes drift { to { transform:translate(6%,4%) rotate(8deg); } }
+  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.55 "Inter",system-ui,"Segoe UI",sans-serif; min-height:100vh; }
   button, input, select, textarea { font:inherit; color:inherit; }
   button { cursor:pointer; }
   :focus-visible { outline:2px solid var(--text); outline-offset:2px; }
   [hidden] { display:none !important; }
-
-  /* ===== animasi masuk ===== */
-  .reveal { animation:up .7s cubic-bezier(.2,.8,.2,1) var(--d,0s) backwards; }
-  @keyframes up { from { opacity:0; transform:translateY(26px) scale(.98); } }
-  @keyframes pop { from { opacity:0; transform:scale(.6) translateY(12px); } }
-  @keyframes fade { from { opacity:0; transform:translateX(-10px); } }
-
-  .frame { position:relative; z-index:1; max-width:1180px; margin:24px auto; background:var(--frame); border-radius:36px; padding:22px 26px 26px;
-    box-shadow:0 18px 50px rgba(0,0,0,.14); transition:background .5s; }
-  .top { display:flex; align-items:center; gap:18px; margin-bottom:6px; }
-  .brand { font-size:1.6rem; font-weight:700; letter-spacing:-.5px; }
-  .search { flex:1; max-width:360px; display:flex; align-items:center; gap:8px; background:var(--panel); border-radius:20px; padding:7px 14px; transition:background .5s; }
-  .search input { border:0; background:none; width:100%; outline:0; font-size:.85rem; }
-  .who { margin-left:auto; display:flex; align-items:center; gap:10px; }
-  .btn { border:0; background:var(--acc); color:var(--onacc); border-radius:999px; padding:8px 16px; font-size:.83rem; transition:transform .25s; }
-  .btn:hover { transform:scale(1.06); } .btn:active { transform:scale(.94); }
-  .ghost { background:var(--panel); color:var(--text); border:1px solid var(--line); }
-  #theme:hover { transform:scale(1.08) rotate(-3deg); }
-  #avatar { width:36px; height:36px; border-radius:50%; object-fit:cover; }
-  #note { margin:0 0 14px 4px; font-size:.76rem; color:var(--muted); }
-  .body { display:grid; grid-template-columns:56px 1fr; gap:14px; }
-  .side { display:flex; flex-direction:column; align-items:center; gap:10px; padding-top:34px; }
-  .side button { width:40px; height:40px; border:0; background:none; border-radius:12px; display:grid; place-items:center; color:var(--text); transition:transform .25s,background .3s; }
-  .side button:hover { background:var(--panel); transform:scale(1.12); }
-  svg.ic { width:22px; height:22px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
-  .panel { background:var(--panel); border-radius:30px; padding:26px; display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:24px; transition:background .5s; }
-  h2, h3 { margin:0 0 14px; font-size:1rem; font-weight:600; }
-  .toprow { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); gap:22px; margin-bottom:26px; }
-
-  /* kartu utama + parallax */
-  .hero { position:relative; overflow:hidden; background:var(--ink); color:#fff; border-radius:22px; padding:18px 20px; min-height:176px;
-    display:flex; flex-direction:column; justify-content:space-between; --px:0; --py:0; border:1px solid rgba(255,255,255,.06); }
-  .hero::before { content:""; position:absolute; inset:0; background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.12) 50%,transparent 60%);
-    transform:translateX(-100%); animation:sheen 7s ease-in-out 1.5s infinite; pointer-events:none; }
-  @keyframes sheen { 0%,60% { transform:translateX(-100%); } 100% { transform:translateX(100%); } }
-  .orb { position:absolute; border-radius:50%; background:#fff; transition:transform .25s ease-out; pointer-events:none; }
-  .o1 { width:150px; height:150px; right:-40px; top:-50px; opacity:.07; transform:translate(calc(var(--px)*22px),calc(var(--py)*12px)); }
-  .o2 { width:220px; height:220px; left:-90px; bottom:-120px; opacity:.05; transform:translate(calc(var(--px)*34px),calc(var(--py)*16px)); }
-  .hero > div { position:relative; z-index:1; }
-  .chip { width:34px; height:26px; border-radius:6px; border:1.5px solid #c9a24a; background:linear-gradient(135deg,#e6c36a,#9c7a2c); }
-  .hero .t { font-size:1.02rem; letter-spacing:.14em; font-weight:600; margin-top:12px; word-break:break-word; }
-  .hero .d { font-size:.88rem; opacity:.85; letter-spacing:.06em; animation:fade 1s .5s backwards; }
-  .hero .b { display:flex; justify-content:space-between; align-items:flex-end; gap:10px; }
-  .hero .a { font-size:.72rem; opacity:.7; max-width:70%; }
-  .rings { display:flex; animation:bob 5s ease-in-out infinite; } @keyframes bob { 50% { transform:translateY(-5px); } }
-  .rings span { width:30px; height:30px; border-radius:50%; display:grid; place-items:center; font:700 .8rem Georgia,serif; color:#fff; }
-  .rings span:first-child { background:#d94b4b; } .rings span:last-child { background:#f0a03c; margin-left:-10px; }
-
-  .tiles { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-  .tile { background:var(--soft); border-radius:22px; padding:16px 10px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:2px;
-    border:1px solid transparent; transition:transform .3s,box-shadow .3s,border-color .3s,background .5s; }
-  .tile:hover { transform:translateY(-5px); box-shadow:0 10px 24px rgba(0,0,0,.14); border-color:var(--text); }
-  .tile .ico { width:42px; height:42px; border-radius:12px; background:var(--acc); color:var(--onacc); display:grid; place-items:center; margin-bottom:6px; }
-  .tile b { font-size:.92rem; font-weight:600; } .tile small { color:var(--muted); font-size:.7rem; } .tile .v { font-weight:600; margin-top:4px; }
-
-  .lh { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
-  .lh h3 { margin:0; }
-  select { background:var(--soft); border:0; border-radius:10px; padding:6px 10px; font-size:.78rem; }
+  h1, h2, h3 { margin:0; font-weight:600; }
+  h2 { font-size:1rem; }
   ul { list-style:none; margin:0; padding:0; }
-  li.item { display:grid; grid-template-columns:40px minmax(0,1.3fr) minmax(0,1fr) minmax(0,1.2fr) 28px; gap:12px; align-items:center;
-    padding:12px 8px; border-bottom:1px solid var(--line); border-radius:10px; cursor:pointer; transition:background .3s,transform .25s; }
-  li.item.pop { animation:pop .5s cubic-bezier(.3,1.5,.5,1) var(--d,0s) backwards; }
+
+  .wrap { max-width:860px; margin:0 auto; padding:32px 20px 72px; }
+  .top { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  .brand { font-size:1.3rem; letter-spacing:-.01em; }
+  .who { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .btn { border:1px solid var(--acc); background:var(--acc); color:var(--onacc); border-radius:8px; padding:7px 14px; font-size:.82rem; transition:opacity .2s; }
+  .btn:hover { opacity:.85; }
+  .ghost { background:transparent; color:var(--text); border-color:var(--line); }
+  .ghost:hover { opacity:1; border-color:var(--muted); }
+  #avatar { width:32px; height:32px; border-radius:50%; object-fit:cover; }
+  #note { margin:10px 0 28px; font-size:.78rem; color:var(--muted); }
+
+  .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  .stat { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px; }
+  .stat small { display:block; color:var(--muted); font-size:.76rem; }
+  .stat b { display:block; font-size:1.5rem; font-weight:600; line-height:1.3; margin-top:2px; }
+  .stat span { display:block; color:var(--muted); font-size:.74rem; min-height:1.1em; }
+
+  .feat { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:24px; margin:12px 0 40px; }
+  .feat .t { font-size:1.3rem; font-weight:600; letter-spacing:-.01em; word-break:break-word; }
+  .feat .d { margin-top:4px; color:var(--muted); font-size:.88rem; }
+  .feat .a { color:var(--muted); font-size:.88rem; }
+  #dIsi { margin:16px 0 0; padding-top:16px; border-top:1px solid var(--line); font-size:.92rem; line-height:1.7; white-space:pre-line; }
+
+  .lh { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:8px; }
+  .tools { display:flex; gap:8px; flex-wrap:wrap; }
+  .tools input, .tools select { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:7px 12px; font-size:.82rem; outline:0; }
+  .tools input { width:210px; }
+  .tools input:focus, .tools select:focus, dialog input:focus, dialog textarea:focus { border-color:var(--muted); }
+  li.item { display:grid; grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1.4fr) 32px; gap:16px; align-items:center;
+    padding:14px 12px; border-bottom:1px solid var(--line); cursor:pointer; transition:background .2s; }
   li.item:last-child { border-bottom:0; }
-  li.item:hover { transform:translateX(4px); } li.item:hover, li.item.sel { background:var(--soft); }
-  .ini { width:36px; height:36px; border-radius:50%; background:var(--soft); display:grid; place-items:center; font:700 .8rem Georgia,serif; }
-  li.item.sel .ini, li.item:hover .ini { background:var(--panel); }
-  .nm { font-weight:500; font-size:.86rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .tg { font-size:.78rem; color:var(--muted); } .al { font-size:.8rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .kb { border:0; background:none; width:28px; height:28px; border-radius:8px; font-size:1.1rem; line-height:1; }
-  .kb:hover { background:var(--panel); }
-  .empty { padding:28px; text-align:center; color:var(--muted); }
+  li.item:hover, li.item.sel { background:var(--soft); }
+  li.item.sel { box-shadow:inset 2px 0 0 var(--acc); }
+  .nm { font-weight:500; font-size:.9rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .tg { font-size:.82rem; color:var(--muted); }
+  .al { font-size:.82rem; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .kb { border:0; background:none; width:32px; height:32px; border-radius:8px; font-size:1.1rem; line-height:1; color:var(--muted); }
+  .kb:hover { background:var(--line); color:var(--text); }
+  .empty { padding:36px; text-align:center; color:var(--muted); font-size:.88rem; }
 
-  .right { background:var(--soft); border-radius:26px; padding:20px; display:flex; flex-direction:column; gap:16px; transition:background .5s; }
-  .detail small { color:var(--muted); font-size:.75rem; }
-  .detail p { margin:6px 0 12px; font-size:.9rem; line-height:1.6; }
-  .detail .meta { display:grid; gap:2px; font-size:.78rem; color:var(--muted); }
-  .donut { background:var(--ink); color:#fff; border-radius:20px; padding:16px 18px; display:flex; justify-content:space-between; align-items:center; margin-top:auto; border:1px solid rgba(255,255,255,.06); }
-  .donut small { opacity:.7; display:block; font-size:.75rem; } .donut b { font-size:1rem; font-weight:600; }
-  .donut svg { width:70px; height:70px; } .donut text { fill:#fff; font:600 15px "Poppins","Segoe UI",sans-serif; }
-  #ring { transition:stroke-dasharray 1.2s cubic-bezier(.3,1,.4,1); }
-
-  /* ===== grafik ===== */
-  .chartbox { grid-column:1 / -1; border:1px solid var(--line); border-radius:20px; padding:16px; }
-  .ch-h { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:6px; }
-  .ch-h h2 { font-size:.85rem; margin:0; }
-  .leg { display:flex; gap:14px; font-size:.75rem; color:var(--muted); }
-  .leg i { display:inline-block; width:14px; border-top:2px solid var(--text); vertical-align:middle; margin-right:5px; }
+  .chartbox { margin-top:48px; }
+  .ch-h { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+  .days { display:flex; gap:4px; overflow-x:auto; }
+  .day { border:0; background:none; color:var(--muted); border-radius:8px; padding:5px 12px; font-size:.8rem; }
+  .day:hover { color:var(--text); }
+  .day[aria-pressed="true"] { background:var(--acc); color:var(--onacc); }
+  .leg { display:flex; gap:16px; font-size:.75rem; color:var(--muted); margin-top:10px; }
+  .leg i { display:inline-block; width:14px; border-top:2px solid var(--text); vertical-align:middle; margin-right:6px; }
   .leg i.bar { height:8px; border:0; background:var(--muted); opacity:.5; }
+  .tip { min-height:22px; font-size:.82rem; margin:8px 0 4px; }
   #chart { width:100%; height:auto; display:block; touch-action:pan-y; }
-  .tip { min-height:24px; font-size:.82rem; font-weight:500; margin:2px 0 6px; }
-  .line { stroke-dasharray:1; stroke-dashoffset:1; animation:draw 1.6s ease-out .1s forwards; }
-  @keyframes draw { to { stroke-dashoffset:0; } }
-  .area { opacity:0; animation:fade2 1s 1.1s forwards; } @keyframes fade2 { to { opacity:.08; } }
-  .bar-r { transform-box:fill-box; transform-origin:bottom; transform:scaleY(0); animation:grow .7s cubic-bezier(.3,1.4,.5,1) forwards; transition:opacity .2s; }
-  .bar-r:hover { opacity:.8 !important; } @keyframes grow { to { transform:scaleY(1); } }
-  .nowdot { animation:ping 1.6s ease-out infinite; transform-box:fill-box; transform-origin:center; }
-  @keyframes ping { 0% { transform:scale(1); } 70%,100% { transform:scale(2.6); opacity:0; } }
-  .days { position:relative; display:flex; gap:6px; margin-top:10px; overflow-x:auto; padding-bottom:2px; }
-  .day { flex:1; min-width:64px; border:1px solid var(--line); background:transparent; border-radius:12px; padding:8px 2px; font-size:.8rem; line-height:1.3;
-    text-align:center; transition:transform .25s,color .3s,border-color .3s; position:relative; z-index:1; }
-  .day:hover { transform:translateY(-3px); } .day[aria-pressed="true"] { color:var(--onacc); border-color:transparent; }
-  .pill { position:absolute; left:0; top:0; height:calc(100% - 2px); border-radius:12px; background:var(--acc); z-index:0;
-    transition:transform .5s cubic-bezier(.3,1.35,.5,1),width .3s,background .5s; }
-  .sum { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:12px; }
-  .stat { border:1px solid var(--line); border-radius:14px; padding:12px 14px; animation:up .6s cubic-bezier(.2,.8,.2,1) backwards;
-    transition:transform .3s,box-shadow .3s,border-color .3s; }
-  .stat:hover { transform:translateY(-5px); box-shadow:0 10px 24px rgba(0,0,0,.14); border-color:var(--text); }
-  .stat small { color:var(--muted); font-size:.75rem; } .stat b { display:block; font-size:1.2rem; font-weight:600; }
-  .hrs { display:flex; gap:8px; overflow-x:auto; margin-top:12px; padding:6px 2px; }
-  .hr { flex:0 0 74px; border:1px solid var(--line); border-radius:12px; padding:8px; text-align:center; font-size:.75rem; animation:pop .5s cubic-bezier(.3,1.5,.5,1) backwards; transition:transform .25s; }
-  .hr:hover { transform:translateY(-4px); } .hr b { display:block; font-size:.95rem; }
-  .hr.now { background:var(--acc); color:var(--onacc); border-color:var(--acc); animation:pop .5s backwards,glow 2s 1s infinite; }
-  @keyframes glow { 50% { box-shadow:0 0 0 6px rgba(128,128,128,.25); } }
+  .area { opacity:.07; }
+  .bar-r:hover { opacity:.7 !important; }
+  .sum { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:16px; }
+  .hrs { display:grid; grid-template-columns:repeat(12,1fr); gap:6px; margin-top:12px; }
+  .hr { border:1px solid var(--line); border-radius:8px; padding:8px 0; text-align:center; font-size:.7rem; color:var(--muted); background:var(--panel); }
+  .hr b { display:block; font-size:.92rem; color:var(--text); font-weight:500; }
+  .hr.now { border-color:var(--acc); }
 
-  /* ===== transisi ganti data / tema ===== */
-  .swap-out { animation:swOut .22s ease-in forwards; } .swap-in { animation:swIn .45s cubic-bezier(.2,.8,.2,1); }
-  @keyframes swOut { to { opacity:0; transform:translateX(calc(var(--dir,1)*-30px)); filter:blur(4px); } }
-  @keyframes swIn { from { opacity:0; transform:translateX(calc(var(--dir,1)*30px)); filter:blur(4px); } }
-  ::view-transition-old(root), ::view-transition-new(root) { animation:none; mix-blend-mode:normal; }
-  ::view-transition-new(root) { animation:vreveal .9s cubic-bezier(.6,0,.2,1); }
-  @keyframes vreveal { from { clip-path:circle(0 at var(--tx,50%) var(--ty,0)); } to { clip-path:circle(150vmax at var(--tx,50%) var(--ty,0)); } }
+  .swap-out { opacity:0; transition:opacity .2s; }
+  .swap-in { animation:fadeIn .3s ease; }
+  @keyframes fadeIn { from { opacity:0; } }
 
-  .menu { position:fixed; z-index:20; background:var(--ink); color:#fff; border-radius:14px; padding:6px; min-width:150px; box-shadow:0 12px 30px rgba(0,0,0,.25); animation:pop .3s cubic-bezier(.3,1.5,.5,1); }
-  .menu button { display:block; width:100%; text-align:left; background:none; border:0; color:inherit; padding:9px 12px; border-radius:9px; font-size:.82rem; }
-  .menu button:hover { background:rgba(255,255,255,.12); } .menu .del { color:#ff9a8f; }
-  dialog { border:0; border-radius:22px; padding:22px; width:min(480px,92vw); background:var(--panel); color:var(--text); }
-  dialog[open] { animation:pop .4s cubic-bezier(.3,1.4,.5,1); }
-  dialog::backdrop { background:rgba(0,0,0,.45); }
-  dialog form { display:grid; gap:12px; } dialog h3 { margin-bottom:2px; }
-  label { display:grid; gap:4px; font-size:.8rem; color:var(--muted); }
-  dialog input, dialog textarea { background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:9px 11px; width:100%; }
-  dialog textarea { resize:vertical; min-height:64px; }
-  .two { display:grid; grid-template-columns:1fr 1fr; gap:12px; } .acts { display:flex; gap:8px; justify-content:flex-end; margin-top:4px; }
+  .menu { position:fixed; z-index:20; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:4px; min-width:140px; box-shadow:0 8px 24px rgba(0,0,0,.12); }
+  .menu button { display:block; width:100%; text-align:left; background:none; border:0; padding:8px 12px; border-radius:7px; font-size:.82rem; }
+  .menu button:hover { background:var(--soft); } .menu .del { color:var(--danger); }
+  dialog { border:1px solid var(--line); border-radius:12px; padding:24px; width:min(460px,92vw); background:var(--panel); color:var(--text); }
+  dialog::backdrop { background:rgba(0,0,0,.4); }
+  dialog form { display:grid; gap:14px; }
+  label { display:grid; gap:5px; font-size:.8rem; color:var(--muted); }
+  dialog input, dialog textarea { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:9px 11px; width:100%; outline:0; }
+  dialog textarea { resize:vertical; min-height:72px; }
+  .two { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .acts { display:flex; gap:8px; justify-content:flex-end; margin-top:4px; }
 
-  @media (max-width:980px) {
-    .panel { grid-template-columns:1fr; } .frame { margin:0; border-radius:0; padding:16px; }
-    .body { grid-template-columns:1fr; } .side { flex-direction:row; padding:0; justify-content:center; order:2; }
-    .toprow { grid-template-columns:1fr; } .top { flex-wrap:wrap; } .search { max-width:none; order:3; flex-basis:100%; }
-    li.item { grid-template-columns:40px minmax(0,1fr) 28px; } li.item .tg, li.item .al { display:none; } li.item .nm { white-space:normal; }
-    .sum { grid-template-columns:1fr; }
+  @media (max-width:640px) {
+    .wrap { padding:20px 16px 56px; }
+    .stats, .sum { gap:8px; } .stat { padding:12px; } .stat b { font-size:1.2rem; }
+    .tools { width:100%; } .tools input { flex:1; width:auto; }
+    li.item { grid-template-columns:minmax(0,1fr) 32px; gap:2px 12px; padding:12px 8px; }
+    li.item .nm { grid-column:1; white-space:normal; } li.item .tg, li.item .al { grid-column:1; }
+    li.item .kb { grid-column:2; grid-row:1 / 4; }
+    .hrs { grid-template-columns:repeat(6,1fr); }
+    .two { grid-template-columns:1fr; }
   }
-  @media (prefers-reduced-motion:reduce) {
-    *, *::before, *::after { animation-duration:.01s !important; animation-iteration-count:1 !important; animation-delay:0s !important; transition:none !important; }
-  }
+  @media (prefers-reduced-motion:reduce) { *, *::before, *::after { animation:none !important; transition:none !important; } }
 </style>
 </head>
 <body>
-<div class="frame">
-  <header class="top reveal" style="--d:0s">
-    <div class="brand">Undangan</div>
-    <label class="search"><svg class="ic" style="width:16px;height:16px" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-      <input id="search" type="search" placeholder="Cari nama, tanggal, alamat" aria-label="Cari"></label>
+<div class="wrap">
+  <header class="top">
+    <h1 class="brand">Undangan</h1>
     <div class="who">
       <button id="theme" class="btn ghost" aria-label="Ganti tema">Mode gelap</button>
+      <button id="navAdd" class="btn" hidden>Tambah undangan</button>
       <button id="btnLogin" class="btn">Masuk dengan Google</button>
+      <button id="navOut" class="btn ghost" hidden>Keluar</button>
       <img id="avatar" alt="" hidden>
     </div>
   </header>
   <p id="note"></p>
 
-  <div class="body">
-    <nav class="side reveal" style="--d:.1s" aria-label="Menu">
-      <button id="navHome" title="Dashboard" aria-label="Dashboard"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></button>
-      <button id="navAdd" title="Tambah undangan" aria-label="Tambah undangan" hidden><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg></button>
-      <button id="navOut" title="Keluar" aria-label="Keluar" hidden><svg class="ic" viewBox="0 0 24 24"><path d="M9 4H5v16h4"/><path d="M16 8l4 4-4 4M20 12H9"/></svg></button>
-    </nav>
+  <section class="stats" aria-label="Ringkasan">
+    <div class="stat"><small>Total undangan</small><b id="tTotal">0</b><span></span></div>
+    <div class="stat"><small>Akan datang</small><b id="tUp">0</b><span id="tNextLbl">Belum ada</span></div>
+    <div class="stat"><small>Data lengkap</small><b id="pct">0%</b><span></span></div>
+  </section>
 
-    <section class="panel reveal" style="--d:.15s">
-      <div>
-        <div class="toprow">
-          <div class="reveal" style="--d:.3s"><h2>Dashboard</h2><div class="hero" id="hero"></div></div>
-          <div><h2>Ringkasan</h2>
-            <div class="tiles">
-              <div class="tile reveal" style="--d:.4s"><div class="ico"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5h6v2"/></svg></div><b>Total</b><small>Semua undangan</small><span class="v" id="tTotal">0</span></div>
-              <div class="tile reveal" style="--d:.5s"><div class="ico"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg></div><b>Akan datang</b><small id="tNextLbl">Belum ada</small><span class="v" id="tUp">0</span></div>
-            </div></div>
-        </div>
-        <div class="lh"><h3>Daftar undangan</h3>
-          <select id="sort" aria-label="Urutkan"><option value="nama">Urut: Nama</option><option value="tgl">Urut: Tanggal</option></select></div>
-        <ul id="rows"></ul>
-        <div id="empty" class="empty" hidden>Belum ada data.</div>
+  <section class="feat" id="feat">
+    <div id="hero"></div>
+    <p id="dIsi">-</p>
+  </section>
+
+  <section>
+    <div class="lh">
+      <h2>Daftar undangan</h2>
+      <div class="tools">
+        <input id="search" type="search" placeholder="Cari nama, tanggal, alamat" aria-label="Cari">
+        <select id="sort" aria-label="Urutkan"><option value="nama">Urut: Nama</option><option value="tgl">Urut: Tanggal</option></select>
       </div>
+    </div>
+    <ul id="rows"></ul>
+    <div id="empty" class="empty" hidden>Belum ada data.</div>
+  </section>
 
-      <aside class="right reveal" style="--d:.45s">
-        <div class="detail" id="detail"><small>Isi undangan</small><p id="dIsi">-</p>
-          <div class="meta"><span id="dTgl"></span><span id="dAl"></span></div></div>
-        <div class="donut"><div><small>Kelengkapan data</small><b>Lengkap</b></div>
-          <svg viewBox="0 0 70 70"><circle cx="35" cy="35" r="27" fill="none" stroke="#3a414b" stroke-width="9"/>
-            <circle id="ring" cx="35" cy="35" r="27" fill="none" stroke="#fff" stroke-width="9" stroke-dasharray="0 170" transform="rotate(-90 35 35)"/>
-            <text id="pct" x="35" y="40" text-anchor="middle">0%</text></svg></div>
-      </aside>
-
-      <section class="chartbox reveal" style="--d:.55s">
-        <div class="ch-h"><h2>Undangan per bulan dan kumulatif</h2>
-          <div class="leg"><span><i></i>Kumulatif</span><span><i class="bar"></i>Per bulan</span></div></div>
-        <div class="tip" id="tip"></div>
-        <svg id="chart" viewBox="0 0 800 260" role="img" aria-label="Grafik jumlah undangan per bulan"></svg>
-        <div class="days" id="days"></div>
-        <div class="sum" id="sum"></div>
-        <div class="hrs" id="hrs"></div>
-      </section>
-    </section>
-  </div>
+  <section class="chartbox">
+    <div class="ch-h"><h2>Undangan per bulan</h2><div class="days" id="days"></div></div>
+    <div class="leg"><span><i></i>Kumulatif</span><span><i class="bar"></i>Per bulan</span></div>
+    <div class="tip" id="tip"></div>
+    <svg id="chart" viewBox="0 0 800 260" role="img" aria-label="Grafik jumlah undangan per bulan"></svg>
+    <div class="sum" id="sum"></div>
+    <div class="hrs" id="hrs"></div>
+  </section>
 </div>
 
 <div class="menu" id="menu" hidden><button data-a="edit">Edit</button><button data-a="del" class="del">Hapus</button></div>
@@ -268,11 +197,10 @@ const BLN = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus",
 const BLN3 = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
 const $ = (id) => document.getElementById(id);
 const reduce = matchMedia("(prefers-reduced-motion:reduce)").matches;
-let user = null, data = {}, selId = null, menuId = null, editId = null, year = null, first = true;
+let user = null, data = {}, selId = null, menuId = null, editId = null, year = null;
 
 const isOwner = () => !!user && OWNERS.includes(user.email);
-const title = (v) => ((v.nama1 || "") + " & " + (v.nama2 || "")).toUpperCase();
-const ini = (v) => ((v.nama1 || "").charAt(0) + (v.nama2 || "").charAt(0)).toUpperCase();
+const title = (v) => (v.nama1 || "") + " & " + (v.nama2 || "");
 function parseTgl(s) {
   const m = /(\d{1,2})\s+([a-zA-Z]+)\s+(\d{4})/.exec(s || "");
   if (!m) return null;
@@ -282,7 +210,7 @@ function parseTgl(s) {
 const short = (d) => d.getDate() + " " + BLN3[d.getMonth()] + " " + d.getFullYear();
 
 // angka menghitung naik
-function setNum(el, to, dec = 0, suf = "", dur = 1100) {
+function setNum(el, to, dec = 0, suf = "", dur = 800) {
   const from = el._v || 0, tok = (el._t = {});
   el._v = to;
   if (reduce || from === to) { el.textContent = to.toFixed(dec) + suf; return; }
@@ -318,7 +246,6 @@ function note() {
 // ---------- auth ----------
 $("btnLogin").onclick = () => signInWithPopup(auth, new GoogleAuthProvider()).catch((e) => alert("Gagal masuk: " + e.message));
 $("navOut").onclick = () => signOut(auth);
-$("navHome").onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
 $("navAdd").onclick = () => openForm(null);
 onAuthStateChanged(auth, (u) => {
   user = u;
@@ -327,7 +254,7 @@ onAuthStateChanged(auth, (u) => {
   if (u) { $("avatar").src = u.photoURL || ""; $("avatar").title = u.email; }
   $("navAdd").hidden = !isOwner();
   $("navOut").hidden = !u;
-  note(); renderList(false);
+  note(); renderList();
 });
 
 onValue(listRef, (snap) => {
@@ -335,56 +262,34 @@ onValue(listRef, (snap) => {
   const { hero, all } = derive();
   const years = yearsOf(all);
   if (year === null || !years.includes(year)) year = hero && hero.d ? hero.d.getFullYear() : new Date().getFullYear();
-  renderTop(); renderList(first); renderYears(); renderChart();
-  first = false;
+  renderTop(); renderList(); renderYears(); renderChart();
 }, (err) => { $("note").textContent = "Gagal membaca data: " + err.message; });
 
-// ---------- kartu utama, ringkasan, detail ----------
+// ---------- undangan terpilih & ringkasan ----------
 function renderTop() {
   const { all, upcoming, hero } = derive();
   const h = $("hero"); h.textContent = "";
   const mk = (cls, txt) => { const e = document.createElement("div"); e.className = cls; e.textContent = txt; return e; };
-  h.append(mk("orb o1", ""), mk("orb o2", ""));
-  if (!hero) {
-    const top = document.createElement("div"); top.append(mk("chip", ""), mk("t", "Belum ada data"));
-    h.append(top, document.createElement("div"));
-  } else {
-    const top = document.createElement("div"); top.append(mk("chip", ""), mk("t", title(hero)), mk("d", hero.tanggal || "-"));
-    const b = mk("b", ""); b.append(mk("a", hero.alamat || ""));
-    const r = document.createElement("div"); r.className = "rings";
-    [ini(hero).charAt(0), ini(hero).charAt(1)].forEach((c) => { const s = document.createElement("span"); s.textContent = c; r.appendChild(s); });
-    b.appendChild(r); h.append(top, b);
-  }
+  if (!hero) h.append(mk("t", "Belum ada data"));
+  else h.append(mk("t", title(hero)), mk("d", hero.tanggal || "-"), mk("a", hero.alamat || ""));
   setNum($("tTotal"), all.length); setNum($("tUp"), upcoming.length);
   $("tNextLbl").textContent = upcoming[0] ? "Terdekat " + short(upcoming[0].d) : "Belum ada";
   $("dIsi").textContent = hero && hero.isi ? hero.isi : "-";
-  $("dTgl").textContent = hero ? (hero.tanggal || "") : "";
-  $("dAl").textContent = hero ? (hero.alamat || "") : "";
   const done = all.filter((v) => FIELDS.every((f) => (v[f] || "").trim())).length;
-  const pct = all.length ? Math.round((done / all.length) * 100) : 0;
-  $("ring").style.strokeDasharray = (pct / 100) * 169.6 + " 170";
-  setNum($("pct"), pct, 0, "%");
+  setNum($("pct"), all.length ? Math.round((done / all.length) * 100) : 0, 0, "%");
 }
-const hero = $("hero");
-hero.addEventListener("pointermove", (e) => {
-  const r = hero.getBoundingClientRect();
-  hero.style.setProperty("--px", ((e.clientX - r.left) / r.width - .5).toFixed(3));
-  hero.style.setProperty("--py", ((e.clientY - r.top) / r.height - .5).toFixed(3));
-});
-hero.addEventListener("pointerleave", () => { hero.style.setProperty("--px", 0); hero.style.setProperty("--py", 0); });
 
 // ---------- daftar ----------
-function renderList(anim) {
+function renderList() {
   const { list, hero } = derive();
   const ul = $("rows"); ul.textContent = "";
   $("empty").hidden = list.length > 0;
-  list.forEach((v, i) => {
+  list.forEach((v) => {
     const li = document.createElement("li");
-    li.className = "item" + (anim ? " pop" : "") + (hero && v.id === hero.id ? " sel" : "");
+    li.className = "item" + (hero && v.id === hero.id ? " sel" : "");
     li.dataset.id = v.id; li.tabIndex = 0;
-    if (anim) li.style.setProperty("--d", (.6 + i * .06) + "s");
     const cell = (cls, txt) => { const d = document.createElement("div"); d.className = cls; d.textContent = txt; return d; };
-    li.append(cell("ini", ini(v)), cell("nm", title(v)), cell("tg", v.tanggal || ""), cell("al", v.alamat || ""));
+    li.append(cell("nm", title(v)), cell("tg", v.tanggal || ""), cell("al", v.alamat || ""));
     const kb = document.createElement("button");
     kb.className = "kb"; kb.textContent = "⋮"; kb.setAttribute("aria-label", "Menu"); kb.hidden = !isOwner();
     kb.onclick = (e) => { e.stopPropagation(); showMenu(v.id, kb); };
@@ -394,55 +299,46 @@ function renderList(anim) {
     ul.appendChild(li);
   });
 }
-$("search").oninput = () => renderList(false);
-$("sort").onchange = () => renderList(true);
+$("search").oninput = () => renderList();
+$("sort").onchange = () => renderList();
 
 let swapBusy = false;
 function selectHero(id) {
   const cur = derive().hero;
   if (swapBusy || (cur && cur.id === id)) return;
   swapBusy = true;
-  const els = [$("hero"), $("detail")];
-  els.forEach((e) => e.classList.add("swap-out"));
+  const el = $("feat");
+  el.classList.add("swap-out");
   setTimeout(() => {
     selId = id; renderTop();
     document.querySelectorAll("li.item").forEach((li) => li.classList.toggle("sel", li.dataset.id === id));
-    els.forEach((e) => { e.classList.remove("swap-out"); e.classList.add("swap-in"); });
+    el.classList.remove("swap-out"); el.classList.add("swap-in");
     const h = derive().hero;
     if (h && h.d && h.d.getFullYear() !== year) changeYear(h.d.getFullYear());
-    setTimeout(() => { els.forEach((e) => e.classList.remove("swap-in")); swapBusy = false; }, 450);
-  }, 220);
+    setTimeout(() => { el.classList.remove("swap-in"); swapBusy = false; }, 320);
+  }, 200);
 }
 
 // ---------- tab tahun ----------
 const yearsOf = (all) => [...new Set([new Date().getFullYear(), ...all.filter((v) => v.d).map((v) => v.d.getFullYear())])].sort();
 function renderYears() {
-  const ys = yearsOf(derive().all);
-  $("days").innerHTML = '<span class="pill"></span>' + ys.map((y) =>
+  $("days").innerHTML = yearsOf(derive().all).map((y) =>
     '<button class="day" data-y="' + y + '" aria-pressed="' + (y === year) + '">' + y + "</button>").join("");
-  requestAnimationFrame(movePill);
 }
 $("days").onclick = (e) => { const b = e.target.closest(".day"); if (b) changeYear(+b.dataset.y); };
-function movePill() {
-  const b = document.querySelector('.day[aria-pressed="true"]'), p = document.querySelector(".pill");
-  if (b && p) { p.style.width = b.offsetWidth + "px"; p.style.transform = "translateX(" + b.offsetLeft + "px)"; }
-}
-addEventListener("resize", movePill);
 let yBusy = false;
 function changeYear(y) {
   if (y === year || yBusy) return;
   yBusy = true;
   const els = [$("chart"), $("sum"), $("hrs"), $("tip")];
-  document.documentElement.style.setProperty("--dir", y > year ? 1 : -1);
   year = y;
   document.querySelectorAll(".day").forEach((b) => b.setAttribute("aria-pressed", +b.dataset.y === year));
-  movePill();
   els.forEach((e) => e.classList.add("swap-out"));
   setTimeout(() => {
     renderChart();
     els.forEach((e) => { e.classList.remove("swap-out"); e.classList.add("swap-in"); });
-    setTimeout(() => { els.forEach((e) => e.classList.remove("swap-in")); yBusy = false; }, 450);
-  }, 220);
+    setTimeout(() => { els.forEach((e) => e.classList.remove("swap-in")); yBusy = false; }, 320);
+  }, 200);
 }
 
 // ---------- grafik ----------
@@ -457,17 +353,16 @@ function renderChart() {
   let s = "";
   for (let k = 0; k <= 4; k++) { const v = mx * k / 4;
     s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y(v) + '" y2="' + y(v) + '" stroke="var(--line)"/><text x="' + (L - 6) + '" y="' + (y(v) + 4) + '" font-size="11" text-anchor="end" fill="var(--muted)">' + v + "</text>"; }
-  counts.forEach((c, i) => { if (c > 0) s += '<rect class="bar-r" x="' + (x(i) - 13) + '" y="' + y(c) + '" width="26" height="' + (H - BT - y(c)) + '" rx="6" fill="var(--muted)" opacity=".35" style="animation-delay:' + (i * .05) + 's"/>'; });
+  counts.forEach((c, i) => { if (c > 0) s += '<rect class="bar-r" x="' + (x(i) - 13) + '" y="' + y(c) + '" width="26" height="' + (H - BT - y(c)) + '" rx="4" fill="var(--muted)" opacity=".35"/>'; });
   const pts = cum.map((v, i) => [x(i), y(v)]);
   let d = "M" + pts[0][0] + " " + pts[0][1];
   for (let i = 1; i < 12; i++) { const a = pts[i - 1], b = pts[i], m = (a[0] + b[0]) / 2; d += " C" + m + " " + a[1] + " " + m + " " + b[1] + " " + b[0] + " " + b[1]; }
   s += '<path class="area" d="' + d + " L" + pts[11][0] + " " + (H - BT) + " L" + pts[0][0] + " " + (H - BT) + 'Z" fill="var(--text)"/>' +
-       '<path class="line" pathLength="1" d="' + d + '" fill="none" stroke="var(--text)" stroke-width="2.5" stroke-linecap="round"/>';
+       '<path d="' + d + '" fill="none" stroke="var(--text)" stroke-width="2" stroke-linecap="round"/>';
   BLN3.forEach((m, i) => { s += '<text x="' + x(i) + '" y="' + (H - 8) + '" font-size="11" text-anchor="middle" fill="var(--muted)">' + m + "</text>"; });
   if (year === today.getFullYear()) { const m = today.getMonth();
-    s += '<line x1="' + x(m) + '" x2="' + x(m) + '" y1="' + TP + '" y2="' + (H - BT) + '" stroke="var(--text)" stroke-dasharray="3 4"/>' +
-         '<circle class="nowdot" cx="' + x(m) + '" cy="' + y(cum[m]) + '" r="5" fill="var(--text)" opacity=".4"/>' +
-         '<circle cx="' + x(m) + '" cy="' + y(cum[m]) + '" r="5" fill="var(--panel)" stroke="var(--text)" stroke-width="2.5"/>'; }
+    s += '<line x1="' + x(m) + '" x2="' + x(m) + '" y1="' + TP + '" y2="' + (H - BT) + '" stroke="var(--muted)" stroke-dasharray="3 4"/>' +
+         '<circle cx="' + x(m) + '" cy="' + y(cum[m]) + '" r="5" fill="var(--panel)" stroke="var(--text)" stroke-width="2"/>'; }
   s += '<line id="cur" y1="' + TP + '" y2="' + (H - BT) + '" stroke="var(--text)" opacity="0"/><circle id="dot" r="5" fill="var(--text)" opacity="0"/>';
   $("chart").innerHTML = s;
 
@@ -476,13 +371,12 @@ function renderChart() {
   const items = [["Undangan tahun " + year, total, "n"], ["Bulan terpadat", peakM >= 0 ? BLN[peakM] + " (" + peak + ")" : "-", "t"], ["Akan datang", upY, "n"]];
   $("sum").innerHTML = items.map(() => '<div class="stat"><small></small><b>0</b></div>').join("");
   document.querySelectorAll("#sum .stat").forEach((el, i) => {
-    el.style.animationDelay = i * .08 + "s";
     el.querySelector("small").textContent = items[i][0];
     const b = el.querySelector("b");
-    if (items[i][2] === "n") setNum(b, items[i][1], 0, "", 900); else b.textContent = items[i][1];
+    if (items[i][2] === "n") setNum(b, items[i][1], 0, "", 700); else b.textContent = items[i][1];
   });
   $("hrs").innerHTML = BLN3.map((m, i) => '<div class="hr' + (year === today.getFullYear() && i === today.getMonth() ? " now" : "") +
-    '" style="animation-delay:' + (i * .05) + 's">' + m + "<b>" + counts[i] + "</b>undangan</div>").join("");
+    '">' + m + "<b>" + counts[i] + "</b></div>").join("");
   const defTip = "Tahun " + year + " · geser pada grafik untuk detail bulan";
   $("tip").textContent = defTip;
 
@@ -491,7 +385,7 @@ function renderChart() {
     const r = svg.getBoundingClientRect();
     let i = Math.round(((e.clientX - r.left) / r.width * W - L) / ((W - L - R) / 11));
     i = Math.max(0, Math.min(11, i));
-    $("cur").setAttribute("x1", x(i)); $("cur").setAttribute("x2", x(i)); $("cur").setAttribute("opacity", .4);
+    $("cur").setAttribute("x1", x(i)); $("cur").setAttribute("x2", x(i)); $("cur").setAttribute("opacity", .3);
     $("dot").setAttribute("cx", x(i)); $("dot").setAttribute("cy", y(cum[i])); $("dot").setAttribute("opacity", 1);
     $("tip").textContent = BLN[i] + " " + year + " · " + counts[i] + " undangan · kumulatif " + cum[i];
   };
@@ -541,17 +435,11 @@ $("form").onsubmit = async (e) => {
   } catch (err) { alert("Gagal menyimpan: " + err.message); }
 };
 
-// ---------- tema (transisi melingkar) ----------
+// ---------- tema ----------
 const root = document.documentElement, tbtn = $("theme");
 const isDark = () => root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme:dark)").matches;
 const lab = () => (tbtn.textContent = isDark() ? "Mode terang" : "Mode gelap");
-tbtn.onclick = () => {
-  const apply = () => { root.dataset.theme = isDark() ? "light" : "dark"; lab(); };
-  if (!document.startViewTransition || reduce) return apply();
-  const r = tbtn.getBoundingClientRect();
-  root.style.setProperty("--tx", (r.left + r.width / 2) + "px"); root.style.setProperty("--ty", (r.top + r.height / 2) + "px");
-  document.startViewTransition(apply);
-};
+tbtn.onclick = () => { root.dataset.theme = isDark() ? "light" : "dark"; lab(); };
 lab(); note();
 </script>
 </body>
